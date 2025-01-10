@@ -1,0 +1,60 @@
+Item 1
+Nome: Camisa Social Manga Longa Azul Claro
+Descrição: Camisa social masculina, manga longa, cor azul claro. Disponível nos tamanhos M, G e GG.
+Preço: R$ 109,90
+Item 2
+Nome: Calça Jeans Azul Escuro
+Descrição: Calça jeans unissex, corte reto, cor azul escuro. Disponível nos tamanhos 38, 40, 42 e 44.
+Preço: R$ 99,90
+Item 3
+Nome: Saia Jeans Azul Claro
+Descrição: Saia jeans feminina, cor azul claro, com cintura alta. Disponível nos tamanhos P, M e G.
+Preço: R$ 89,90
+Item 4
+Nome: Bermuda de Sarja Bege Escuro
+Descrição: Bermuda masculina de sarja, cor bege escuro. Disponível nos tamanhos 38, 40, 42 e 44.
+Preço: R$ 79,90
+Item 5
+Nome: Blusa de Manga Curta Preta
+Descrição: Blusa feminina de manga curta, cor preta, modelo básico. Disponível nos tamanhos P, M e G.
+Preço: R$ 49,90
+Item 6
+Nome: Camisa Social Manga Curta Branca
+Descrição: Camisa social masculina, manga curta, cor branca. Disponível nos tamanhos M, G e GG.
+Preço: R$ 89,90
+Item 7
+Nome: Calça Jeans Preta
+Descrição: Calça jeans feminina, cor preta, corte skinny. Disponível nos tamanhos 36, 38, 40 e 42.
+Preço: R$ 99,90
+Item 8
+Nome: Saia Midi Bege Claro
+Descrição: Saia feminina em tecido leve, cor bege claro, com cintura ajustável. Disponível nos tamanhos P, M e G.
+Preço: R$ 79,90
+Item 9
+Nome: Bermuda Jeans Azul Claro
+Descrição: Bermuda jeans masculina, cor azul claro, com corte tradicional. Disponível nos tamanhos 38, 40, 42 e 44.
+Preço: R$ 89,90
+Item 10
+Nome: Blusa Manga Longa Branca
+Descrição: Blusa feminina de manga longa, cor branca, modelo básico. Disponível nos tamanhos P, M e G.
+Preço: R$ 69,90
+Item 11
+Nome: Camisa Casual Manga Longa Preta
+Descrição: Camisa casual masculina, manga longa, cor preta. Disponível nos tamanhos M, G e GG.
+Preço: R$ 119,90
+Item 12
+Nome: Calça Jeans Azul Claro
+Descrição: Calça jeans feminina, cor azul claro, modelo flare. Disponível nos tamanhos 36, 38, 40 e 42.
+Preço: R$ 129,90
+Item 13
+Nome: Saia Curta Jeans Azul Escuro
+Descrição: Saia jeans feminina, cor azul escuro, com barra desfiada. Disponível nos tamanhos P, M e G.
+Preço: R$ 79,90
+Item 14
+Nome: Bermuda de Sarja Preta
+Descrição: Bermuda masculina de sarja, cor preta, com bolsos laterais. Disponível nos tamanhos 38, 40, 42 e 44.
+Preço: R$ 89,90
+Item 15
+Nome: Blusa Manga Curta Bege Claro
+Descrição: Blusa feminina de manga curta, cor bege claro, com gola arredondada. Disponível nos tamanhos P, M e G.
+Preço: R$ 59,90
