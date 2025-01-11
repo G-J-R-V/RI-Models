@@ -1,92 +1,92 @@
-[
-    {
+{
+    "Doc1": {
         "Item": "1",
         "Nome": "Camisa Social Manga Longa Azul Claro",
         "Descricao": "Camisa social masculina, manga longa, cor azul claro. Disponível nos tamanhos M, G e GG.",
         "Preco": 109.9
     },
-    {
+    "Doc2": {
         "Item": "2",
         "Nome": "Calça Jeans Azul Escuro",
         "Descricao": "Calça jeans unissex, corte reto, cor azul escuro. Disponível nos tamanhos 38, 40, 42 e 44.",
         "Preco": 99.9
     },
-    {
+    "Doc3": {
         "Item": "3",
         "Nome": "Saia Jeans Azul Claro",
         "Descricao": "Saia jeans feminina, cor azul claro, com cintura alta. Disponível nos tamanhos P, M e G.",
         "Preco": 89.9
     },
-    {
+    "Doc4": {
         "Item": "4",
         "Nome": "Bermuda de Sarja Bege Escuro",
         "Descricao": "Bermuda masculina de sarja, cor bege escuro. Disponível nos tamanhos 38, 40, 42 e 44.",
         "Preco": 79.9
     },
-    {
+    "Doc5": {
         "Item": "5",
         "Nome": "Blusa de Manga Curta Preta",
         "Descricao": "Blusa feminina de manga curta, cor preta, modelo básico. Disponível nos tamanhos P, M e G.",
         "Preco": 49.9
     },
-    {
+    "Doc6": {
         "Item": "6",
         "Nome": "Camisa Social Manga Curta Branca",
         "Descricao": "Camisa social masculina, manga curta, cor branca. Disponível nos tamanhos M, G e GG.",
         "Preco": 89.9
     },
-    {
+    "Doc7": {
         "Item": "7",
         "Nome": "Calça Jeans Preta",
         "Descricao": "Calça jeans feminina, cor preta, corte skinny. Disponível nos tamanhos 36, 38, 40 e 42.",
         "Preco": 99.9
     },
-    {
+    "Doc8": {
         "Item": "8",
         "Nome": "Saia Midi Bege Claro",
         "Descricao": "Saia feminina em tecido leve, cor bege claro, com cintura ajustável. Disponível nos tamanhos P, M e G.",
         "Preco": 79.9
     },
-    {
+    "Doc9": {
         "Item": "9",
         "Nome": "Bermuda Jeans Azul Claro",
         "Descricao": "Bermuda jeans masculina, cor azul claro, com corte tradicional. Disponível nos tamanhos 38, 40, 42 e 44.",
         "Preco": 89.9
     },
-    {
+    "Doc10": {
         "Item": "10",
         "Nome": "Blusa Manga Longa Branca",
         "Descricao": "Blusa feminina de manga longa, cor branca, modelo básico. Disponível nos tamanhos P, M e G.",
         "Preco": 69.9
     },
-    {
+    "Doc11": {
         "Item": "11",
         "Nome": "Camisa Casual Manga Longa Preta",
         "Descricao": "Camisa casual masculina, manga longa, cor preta. Disponível nos tamanhos M, G e GG.",
         "Preco": 119.9
     },
-    {
+    "Doc12": {
         "Item": "12",
         "Nome": "Calça Jeans Azul Claro",
         "Descricao": "Calça jeans feminina, cor azul claro, modelo flare. Disponível nos tamanhos 36, 38, 40 e 42.",
         "Preco": 129.9
     },
-    {
+    "Doc13": {
         "Item": "13",
         "Nome": "Saia Curta Jeans Azul Escuro",
         "Descricao": "Saia jeans feminina, cor azul escuro, com barra desfiada. Disponível nos tamanhos P, M e G.",
         "Preco": 79.9
     },
-    {
+    "Doc14": {
         "Item": "14",
         "Nome": "Bermuda de Sarja Preta",
         "Descricao": "Bermuda masculina de sarja, cor preta, com bolsos laterais. Disponível nos tamanhos 38, 40, 42 e 44.",
         "Preco": 89.9
     },
-    {
+    "Doc15": {
         "Item": "15",
         "Nome": "Blusa Manga Curta Bege Claro",
         "Descricao": "Blusa feminina de manga curta, cor bege claro, com gola arredondada. Disponível nos tamanhos P, M e G.",
         "Preco": 59.9
     }
-]
+}

@@ -4,7 +4,7 @@ def get_json():
     with open(r"res/loja_de_roupas_ultimos_itens.txt",'r',encoding='utf-8') as arquivo:
         linhas = arquivo.readlines()
 
-    lista = []
+    dicionario = {}
     d = {
         'Item':'',
         'Nome':'',
@@ -25,11 +25,11 @@ def get_json():
 
         ctrl+=1
         if ctrl>=4:
-            lista.append(d.copy())
+            dicionario["Doc"+d['Item']] = d.copy()
             ctrl=0
     
     with open(r'res/dados_loja.json','w',encoding='utf-8') as arquivo_json:
-        json.dump(lista,arquivo_json,indent=4,ensure_ascii=False)
+        json.dump(dicionario,arquivo_json,indent=4,ensure_ascii=False)
 
     
 
