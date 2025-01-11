@@ -1,10 +1,14 @@
 import math
+import string
 
 def get_words_desc(desc:str) -> list[str]:
     desc_words = []
 
-    for desc in desc.split(" "):
-        desc_words.append(desc.lower())
+    # Removing punctuation
+    desc = desc.translate(str.maketrans('', '', string.punctuation))
+
+    for word in desc.split(" "):
+        desc_words.append(word.lower())
 
     return desc_words
 
@@ -14,7 +18,7 @@ def get_vocab(doc_dict: dict) -> set[str]:
 
     # Get docs values: Id, Desc, Price
     for doc in doc_dict.values():
-        doc_desc = doc.get("Desc")
+        doc_desc = doc.get("Nome") + " " + doc.get("Descricao")
 
         # Get separate words from doc_desc
         doc_desc_words += get_words_desc(doc_desc)
@@ -35,7 +39,7 @@ def get_freq(doc_dict:dict, vocab:set[str]):
 
         doc_freq[doc] = {}
 
-        doc_desc = doc_content.get("Desc")
+        doc_desc = doc_content.get("Nome") + " " + doc_content.get("Descricao")
 
         doc_desc_words = get_words_desc(doc_desc)
 
@@ -67,18 +71,3 @@ def get_TF(doc_freq:dict):
 
 
 # def modelo_vetorial():
-
-
-if __name__ == "__main__":
-    test_data = {
-        "D1": {"Id": 1, "Desc": "Camisa azul", "Price": 100.00},
-        "D2": {"Id": 2, "Desc": "Camisa vermelha vermelha", "Price": 90.00},
-        "D3": {"Id": 3, "Desc": "Camisa verde", "Price": 80.00},
-    }
-
-    vocab = get_vocab(test_data)
-    doc_freq = get_freq(test_data, vocab)
-    get_TF(doc_freq)
-
-
-# input()
