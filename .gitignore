@@ -169,6 +169,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-main.py
+search_q.py
 /res
 txt_to_json.py
+/.idea
