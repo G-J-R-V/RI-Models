@@ -117,7 +117,7 @@ def doc_normalization(doc_:dict):
     return doc_magnitude, doc_copy
 
 
-def modelo_vetorial(test_data:dict, query:str):
+def modelo_vetorial(test_data:dict, query:str) -> dict:
 
     n = len(test_data.keys())
     ni = 0
@@ -185,9 +185,25 @@ def modelo_vetorial(test_data:dict, query:str):
         for word in doc_TF_IDF[doc].keys():
             sum += doc_TF_IDF[doc][word] * query_TF_IDF[word]
 
-        similarity[doc] = sum / doc_magnitude[doc]
+        similarity[doc] = {"sim": float(sum / doc_magnitude[doc])}
 
-    print("\n")
+    # Sorting documents based on similarity scores
+    sorted_docs = sorted(similarity.keys(), key=lambda doc: similarity[doc]["sim"], reverse=True)
+
+    # Adding ranking to each document
+    for rank, doc in enumerate(sorted_docs, start=1):
+        similarity[doc]["ranking"] = rank
+
+    # Printing the results
     print(similarity)
 
-    print(ni_docs)
+    similar_products = {key: value for key, value in test_data.items() if key in similarity.keys()}
+
+    for key in similar_products.keys():
+        similar_products[key]["sim"] = similarity[key]["sim"]
+        similar_products[key]["ranking"] = similarity[key]["ranking"]
+
+    print("Similar products with rankings:")
+    print(similar_products)
+
+    return similar_products
