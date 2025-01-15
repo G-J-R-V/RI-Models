@@ -206,4 +206,7 @@ def modelo_vetorial(test_data:dict, query:str) -> dict:
     print("Similar products with rankings:")
     print(similar_products)
 
-    return similar_products
+    # Sorting the similar products by their rankings and creating a dictionary
+    sorted_similar_products = {doc: similar_products[doc] for doc in sorted(similar_products.keys(), key=lambda doc: similarity[doc]["ranking"])}
+
+    return sorted_similar_products
