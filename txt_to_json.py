@@ -42,7 +42,6 @@ def tratar_desc():
         dados=json.load(arquivo)
 
     for i in dados:
-        #i['Descricao']=dados[i]['Descricao'].lower().replace('.','').replace(',','')
         l = []
         lista = i['Descricao'].lower().replace('.','').replace(',','').split()
         lista=[w for w in lista if not w in sw]
