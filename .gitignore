@@ -172,3 +172,5 @@ cython_debug/
 /res
 txt_to_json.py
 /.idea
+/TESTS/
+/RI_models_docs/
