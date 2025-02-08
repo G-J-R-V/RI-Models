@@ -1,39 +1,80 @@
 import copy
 import math
-import string
+from collections import Counter
+from typing import Any
+
 import numpy
 
-def get_words_desc(desc:str) -> list[str]:
-    desc_words = []
+from Models.Rocchio import rocchio
 
-    # Removing punctuation
-    desc = desc.translate(str.maketrans('', '', string.punctuation))
 
-    for word in desc.split(" "):
-        desc_words.append(word.lower())
+def get_vocab(doc_dict: dict, query_dict: dict[str:int]) -> dict[str:int]:
+    """
+    Gets all the words from all the documents, deduplicates them, and returns the set.
 
-    return desc_words
+    Parameters
+    ----------
 
-def get_vocab(doc_dict: dict) -> set[str]:
+    doc_dict: dict
+        dictionary of documents.
+    query_dict: dict
+        dictionary of words and frequencies.
+
+    Returns
+    -------
+
+    vocab_dict: dict
+        vocabulary, with words and frequencies.
+    doc_dict: dict
+        dictionary of documents, with all the keys from the vocab and frequencies.
+
+    """
     vocab = []
-    doc_desc_words = []
 
-    # Get docs values: Id, Desc, Price
-    for doc in doc_dict.values():
-        doc_desc = doc.get("Nome") + " " + doc.get("Descricao")
+    # Add each Descricao to vocab
+    for key, value in doc_dict.items():
 
-        # Get separate words from doc_desc
-        doc_desc_words += get_words_desc(doc_desc)
+        vocab.extend(value.get("Descricao"))
 
-    # doc_desc_words.sort()
+    # Add query to vocab
+    vocab.extend(query_dict.keys())
 
-    vocab = set(doc_desc_words)
+    vocab = sorted(set(vocab))
+    print("\n")
+    print(vocab)
+    print("\n")
 
-    # print(f"Vocabulario: {vocab}")
+    # Create a dictionary with all keys set to 0
+    vocab_dict = dict.fromkeys(vocab, 0)
 
-    return vocab
+    # Update each document with all the keys
+    for key, value in doc_dict.items():
 
-def get_freq(doc_dict:dict, vocab:set[str]):
+        desc_dict = dict(Counter(value.get("Descricao")))
+
+        doc_dict[key]["Descricao"] = {
+            vocab_key: desc_dict.get(vocab_key, 0) for vocab_key in vocab_dict
+        }
+
+        # print(f"{key}: {value}")
+
+    return vocab_dict, doc_dict
+
+
+def get_freq(doc_dict: dict, vocab: set[str]) -> dict:
+    """
+    Gets the frequency of each word per document and returns a dictionary {word:freq}.
+
+    Parameters
+    --------
+
+    doc_dict: dict
+        dictionary of documents.
+
+    vocab: set[str]
+        set of words present in the documents.
+
+    """
 
     doc_freq = {}
 
@@ -41,9 +82,7 @@ def get_freq(doc_dict:dict, vocab:set[str]):
 
         doc_freq[doc] = {}
 
-        doc_desc = doc_content.get("Nome") + " " + doc_content.get("Descricao")
-
-        doc_desc_words = get_words_desc(doc_desc)
+        doc_desc_words = doc_dict[doc].get("Descricao")
 
         for word in doc_desc_words:
             if word not in vocab:
@@ -58,7 +97,22 @@ def get_freq(doc_dict:dict, vocab:set[str]):
     return doc_freq
 
 
-def get_TF(doc_freq:dict, idf: float):
+def get_TF_IDF(doc_freq: dict, idf: float):
+    """
+    Gets the term frequency for each word in document,
+    using the formula (1 + log10(freq))
+    and multiplies it by the inverse of document frequency log10(documents/relevant documents).
+
+    Parameters
+    ---------
+
+    doc_freq: dict
+        dictionary of documents, with each word in them and their frequency.
+
+    idf: float
+        inverse document frequency.
+
+    """
 
     doc_freq_copy = copy.deepcopy(doc_freq)
 
@@ -71,11 +125,23 @@ def get_TF(doc_freq:dict, idf: float):
             # (1 + log(freq)) * log(n/ni)
             doc_content[word] = (1 + math.log(doc_content_word_freq, 10)) * idf
 
-    print(f"TF: {doc_freq_copy}")
+    print(f"TF: {doc_freq_copy}\n")
 
     return doc_freq_copy
 
-def doc_normalization(doc_:dict):
+
+def doc_normalization(doc_: dict):
+    """
+    Normalization of documents, so documents with more words don't perform better than the others.
+
+    Parameters
+    ---------
+
+    doc_: dict
+        dictionary of documents, and words with their frequency.
+
+    """
+
     doc_copy = copy.deepcopy(doc_)
     doc_magnitude = {}
 
@@ -89,7 +155,7 @@ def doc_normalization(doc_:dict):
         for word in doc_content.keys():
             freq = doc_content[word]
 
-            doc_sum.append(freq ** 2)
+            doc_sum.append(freq**2)
 
         # Sum of squared frequencies
         doc_sum_sum = sum(doc_sum)
@@ -99,7 +165,8 @@ def doc_normalization(doc_:dict):
 
         doc_magnitude[doc] = magnitude
 
-        print(f"{doc} magnitude: {magnitude}")
+        # print(f"{doc} magnitude: {magnitude}")
+    # print("\n")
 
     # D1, D2, D3,...
     for doc in doc_copy.keys():
@@ -117,27 +184,56 @@ def doc_normalization(doc_:dict):
     return doc_magnitude, doc_copy
 
 
-def modelo_vetorial(test_data:dict, query:str) -> dict:
+def modelo_vetorial(test_data: dict, query: list[str]) -> str | list[Any]:
+    """
+    RI model, using vectors of similarity between documents to determine which ones match the query.
 
-    n = len(test_data.keys())
+    Parameter
+    --------
+
+    test_data: dict
+        Data obtained from the json, documents with name, description, etc.
+
+    query:list[str]
+        List of words in the query that comes from the user.
+
+    """
+
+    ### Variables
+    n = len(test_data.keys())  # if type(test_data="dict") else 1
     ni = 0
     ni_docs = []
 
-    query_fixed = query.lower()
-    query_word_list = query_fixed.split(" ")
+    ### Query
+    query_dict = dict(Counter(query))
 
-    query_dict = {}
+    ### Vocab
+    vocab_dict, doc_freq = get_vocab(test_data, query_dict)
 
-    for word in query_word_list:
-        if word not in query_dict.keys():
-            query_dict[word] = 1
+    # Update query_dict with all vocabulary keys
+    query_dict = {vocab_key: query_dict.get(vocab_key, 0) for vocab_key in vocab_dict}
+
+    ### Modified Query
+    relevant_docs, n_relevant_docs = [], []
+
+    for doc_id, doc in doc_freq.items():
+        if doc["R"]:
+            relevant_docs.append(doc_id)
         else:
-            query_dict[word] += 1
+            n_relevant_docs.append(doc_id)
 
-    vocab = get_vocab(test_data)
+    if relevant_docs and n_relevant_docs:
+        modified_query = rocchio(
+            query_dict,
+            doc_freq,
+            relevant_docs,
+        )
+    else:
+        print(
+            "Can't use Rocchio, because either there are no relevant documents, or no irrelevant documents"
+        )
 
-    doc_freq = get_freq(test_data, vocab)
-
+    ### Calculating ni (Relevant documents)
     # camisa, azul,...
     for word in query_dict.keys():
 
@@ -152,31 +248,47 @@ def modelo_vetorial(test_data:dict, query:str) -> dict:
                     ni += 1
                     ni_docs.append(doc)
 
+    if ni == 0:
+        return "Couldn't find anything with that query"
+
     relevant_docs = {key: doc_freq[key] for key in ni_docs if key in doc_freq}
 
-    # Remove words that are not on the query
+    # Remove words, that are not on the query, from relevant_docs
     relevant_docs_words = {
-        key: { inner_key: inner_value for inner_key, inner_value in value.items() if inner_key in query_word_list }
+        key: {
+            inner_key: inner_value
+            for inner_key, inner_value in value.items()
+            if inner_key in query
+        }
         for key, value in relevant_docs.items()
     }
 
-    print(relevant_docs_words)
+    print("Relevant words: " + f"{relevant_docs_words}\n")
 
-    idf = math.log(n/ni, 10)
+    ### TF_IDF
+    idf = math.log(n / ni, 10)
 
-    print(f"IDF: {idf}")
+    print(f"IDF: {idf}\n")
 
-    doc_TF_IDF = get_TF(relevant_docs_words, idf)
+    doc_TF_IDF = get_TF_IDF(relevant_docs_words, idf)
 
-    query_TF_IDF = {key: (1+math.log(value, 10)) * idf for key, value in query_dict.items()}
+    query_TF_IDF = {
+        key: (1 + math.log(value, 10)) * idf for key, value in query_dict.items()
+    }
 
-    print(query_TF_IDF)
+    print("Query TF_IDF: " + f"{query_TF_IDF}\n")
 
+    ### Normalization
     doc_magnitude, doc_normalized = doc_normalization(doc_TF_IDF)
 
     # for doc in doc_normalized:
     #     print(f"{doc}: {doc_normalized[doc]}")
-    # print()
+
+    ### Kmeans
+
+    # kmeans(doc_TF_IDF)
+
+    ### Similarity scores between documents and the query
 
     similarity = {}
 
@@ -188,25 +300,28 @@ def modelo_vetorial(test_data:dict, query:str) -> dict:
         similarity[doc] = {"sim": float(sum / doc_magnitude[doc])}
 
     # Sorting documents based on similarity scores
-    sorted_docs = sorted(similarity.keys(), key=lambda doc: similarity[doc]["sim"], reverse=True)
+    sorted_docs = sorted(
+        similarity.keys(), key=lambda doc: similarity[doc]["sim"], reverse=True
+    )
 
     # Adding ranking to each document
     for rank, doc in enumerate(sorted_docs, start=1):
         similarity[doc]["ranking"] = rank
+        similarity[doc]["ID"] = "".join([n for w in doc for n in w if n.isdigit()])
 
-    # Printing the results
-    print(similarity)
-
-    similar_products = {key: value for key, value in test_data.items() if key in similarity.keys()}
-
-    for key in similar_products.keys():
-        similar_products[key]["sim"] = similarity[key]["sim"]
-        similar_products[key]["ranking"] = similarity[key]["ranking"]
-
-    print("Similar products with rankings:")
-    print(similar_products)
+    ### This is for returning product details together with the score, not necessary for the API
+    # similar_products = {key: value for key, value in test_data.items() if key in similarity.keys()}
+    #
+    # for key in similar_products.keys():
+    #     similar_products[key]["sim"] = similarity[key]["sim"]
+    #     similar_products[key]["ranking"] = similarity[key]["ranking"]
 
     # Sorting the similar products by their rankings and creating a dictionary
-    sorted_similar_products = {doc: similar_products[doc] for doc in sorted(similar_products.keys(), key=lambda doc: similarity[doc]["ranking"])}
+    sorted_similarity = {
+        doc: similarity[doc]
+        for doc in sorted(similarity.keys(), key=lambda doc: similarity[doc]["ranking"])
+    }
 
-    return sorted_similar_products
+    similar_products = list(sorted_similarity.values())
+
+    return similar_products
