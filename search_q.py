@@ -49,6 +49,8 @@ def search_query(query: str = ""):
 
     resultado_vetorial = modelo_vetorial(test_data_dict, cleaned_query)
 
+    print(f"Resultado: {resultado_vetorial}")
+
     return resultado_vetorial  ##
 
 
