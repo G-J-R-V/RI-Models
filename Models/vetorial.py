@@ -314,17 +314,23 @@ def modelo_vetorial(test_data: dict, query: list[str]) -> str | list[Any]:
         similarity.keys(), key=lambda l_doc: similarity[l_doc]["sim"], reverse=True
     )
 
+    print(sorted_docs)
+    print("\n")
+
     # Adding ranking to each document
-    for rank, doc in enumerate(sorted_docs, start=1):
-        similarity[doc]["ranking"] = rank
-        similarity[doc]["ID"] = "".join([n for w in doc for n in w if n.isdigit()])
+    for rank, doc_id in enumerate(sorted_docs, start=1):
+        similarity[doc_id]["ranking"] = rank
+        similarity[doc_id]["ID"] = str(int("".join([id_n for id_n in doc_id if id_n.isdigit()]))+1)
 
     ### This is for returning product details together with the score, not necessary for the API
-    # similar_products = {key: value for key, value in test_data.items() if key in similarity.keys()}
-    #
-    # for key in similar_products.keys():
-    #     similar_products[key]["sim"] = similarity[key]["sim"]
-    #     similar_products[key]["ranking"] = similarity[key]["ranking"]
+    similar_products = {key: value for key, value in test_data.items() if key in similarity.keys()}
+
+    for key in similar_products.keys():
+        similar_products[key]["sim"] = similarity[key]["sim"]
+        similar_products[key]["ranking"] = similarity[key]["ranking"]
+
+    print(similar_products)
+    print("\n")
 
     # Sorting the similar products by their rankings and creating a dictionary
     sorted_similarity = {
