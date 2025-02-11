@@ -15,7 +15,7 @@ sw = set(stopwords.words("portuguese"))
 ###
 
 ### Global test_data
-with open("./res/dados_loja.json", "r", encoding="utf-8") as file:
+with open("res/dados_loja.json", "r", encoding="utf-8") as file:
     test_data = json.load(file)
 
 test_data_dict = {}
@@ -56,6 +56,6 @@ def search_query(query: str = ""):
 
 if __name__ == "__main__":
 
-    resultado = search_query("Blusa Azul Escuro")
+    resultado = search_query("Blusa")
 
-    print(f"\nResultado: {resultado}")
+    # print(f"\nResultado: {resultado}")
