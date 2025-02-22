@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import numpy as np
 from tabulate import tabulate
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
@@ -35,15 +36,17 @@ def KmeansSKL():
     X = df.drop("Item", axis=1)
 
     kmeans = KMeans(n_clusters=4, random_state=42) # Cria um modelo KMeans com 4 clusters
-    df["Cluster"] = kmeans.fit_predict(X)   # Encontra os melhores centros dos clusters e atribui a cada item um cluster
-
-    print(kmeans.labels_)
-    
+    df["Cluster"] = kmeans.fit_predict(X)   # Encontra os melhores centros dos clusters e atribui a cada item um cluster    
     
     return df
 
-    
+def KMeansGroups():
+    df = KmeansSKL()
+    matriz = df.groupby("Cluster")["Item"].apply(list).tolist() # Agrupa os itens por cluster, Itens vão de 1 a 15
+    print(matriz)
 
-df = KmeansSKL()
+    print(df[["Item", "Cluster"]])
 
-print(df[["Item", "Cluster"]])
+    return matriz
+
+matriz = KMeansGroups()
