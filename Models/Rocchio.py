@@ -33,9 +33,9 @@ def rocchio(
         list of relevant doc_ids
     n_relevant_docs:list
         ~relevant_docs
-    alpha: float
-    beta: float
-    gama: float
+    alpha: float = 1
+    beta: float = 0.6
+    gama: float = 0.4
 
     Returns
     -------
@@ -43,7 +43,8 @@ def rocchio(
     modified_query_dict: dict
         modified query
     """
-    modified_query = []
+
+    query_keys = [key for key in query.keys() if query[key] > 0]
     query_freqs = np.array(list(query.values()))
 
     relevant_words = []
@@ -52,11 +53,11 @@ def rocchio(
     for doc_id, doc in doc_freq.items():
 
         if doc_id in relevant_docs:
-            # print(f"\nRelevant {doc_id} {doc["Descricao"]}\n")
-            relevant_words.append(np.array(list(doc["Descricao"].values())))
+            # print(f"\nRelevant {doc_id} {doc}\n")
+            relevant_words.append(np.array(list(doc.values())))
         else:
-            # print(f"\nn_Relevant {doc_id} {doc["Descricao"]}\n")
-            n_relevant_words.append(np.array(list(doc["Descricao"].values())))
+            # print(f"\nn_Relevant {doc_id} {doc}\n")
+            n_relevant_words.append(np.array(list(doc.values())))
 
     # print(relevant_words)
 
@@ -67,6 +68,7 @@ def rocchio(
     print(f"relevant_ {relevant_words_sum}")
     print(f"n_relevant_ {n_relevant_words_sum}")
 
+    # Rocchio
     modified_query = (
         alpha * query_freqs
         + (beta / len(relevant_docs)) * relevant_words_sum
@@ -79,10 +81,31 @@ def rocchio(
         key: float(round(value, 3)) for key, value in zip(query, modified_query)
     }
 
-    print("\n")
-    print(f"New query: {modified_query_dict}")
+    # Sort modified query by the word value, descending
+    modified_query_dict_sorted = {
+        key: modified_query_dict[key]
+        for key in sorted(
+            modified_query_dict.keys(),
+            key=lambda l_doc: modified_query_dict[l_doc],
+            reverse=True,
+        )
+    }
 
-    return modified_query_dict
+    # Get new recommended key
+    new_key = [key for key in modified_query_dict_sorted if key not in query_keys][0]
+
+    # Filter modified query to only the original keys and the new one
+    modified_query_dict_filtered = {
+        key: value
+        for key, value in modified_query_dict.items()
+        if key in query_keys or key == new_key
+    }
+
+    print("\n")
+    print(f"New query: {modified_query_dict}\n")
+    print(f"New query_filtered: {modified_query_dict_filtered}\n")
+
+    return modified_query_dict_filtered
 
 
 if __name__ == "__main__":
@@ -96,34 +119,28 @@ if __name__ == "__main__":
     }
     doc_freq = {
         "Doc0": {
-            "Descricao": {
-                "alface": 0,
-                "arroz": 1,
-                "batata": 3,
-                "caju": 0,
-                "feijao": 0,
-                "maca": 0,
-            }
+            "alface": 0,
+            "arroz": 1,
+            "batata": 3,
+            "caju": 0,
+            "feijao": 0,
+            "maca": 0,
         },
         "Doc1": {
-            "Descricao": {
-                "alface": 4,
-                "arroz": 0,
-                "batata": 0,
-                "caju": 0,
-                "feijao": 0,
-                "maca": 3,
-            }
+            "alface": 4,
+            "arroz": 0,
+            "batata": 0,
+            "caju": 0,
+            "feijao": 0,
+            "maca": 3,
         },
         "Doc2": {
-            "Descricao": {
-                "alface": 0,
-                "arroz": 0,
-                "batata": 0,
-                "caju": 3,
-                "feijao": 1,
-                "maca": 0,
-            }
+            "alface": 0,
+            "arroz": 0,
+            "batata": 0,
+            "caju": 3,
+            "feijao": 1,
+            "maca": 0,
         },
     }
 
