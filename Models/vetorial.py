@@ -9,7 +9,7 @@ import numpy
 from Models.Rocchio import rocchio
 
 
-def get_vocab(test_data: dict, query_dict: dict[str:int]) -> dict[str:int]:
+def get_vocab(json_data_dict: dict, query_dict: dict[str:int]) -> dict[str:int]:
     """
     Gets all the words from all the documents, deduplicates them, and returns the set
     and a dict of documents with all the keys in vocab.
@@ -17,7 +17,7 @@ def get_vocab(test_data: dict, query_dict: dict[str:int]) -> dict[str:int]:
     Parameters
     ----------
 
-    test_data: dict
+    json_data_dict: dict
         dictionary of documents, with Descricao
     query_dict: dict
         dictionary of words and frequencies, in the query.
@@ -32,7 +32,7 @@ def get_vocab(test_data: dict, query_dict: dict[str:int]) -> dict[str:int]:
 
     """
     vocab = []
-    doc_dict = deepcopy(test_data)
+    doc_dict = deepcopy(json_data_dict)
 
     # Add each Descricao to vocab
     for key, value in doc_dict.items():
@@ -148,7 +148,7 @@ def modelo_vetorial(json_data: dict, query: list[str]) -> str | list[Any]:
     Parameter
     --------
 
-    test_data: dict
+    json_data: dict
         Data obtained from the json, documents with name, description, etc.
 
     query:list[str]
@@ -157,7 +157,7 @@ def modelo_vetorial(json_data: dict, query: list[str]) -> str | list[Any]:
     """
 
     ### Variables
-    n = len(json_data.keys())  # if type(test_data="dict") else 1
+    n = len(json_data.keys())  # if type(json_data="dict") else 1
     ni = 0
     ni_docs = []
 
@@ -272,7 +272,7 @@ def modelo_vetorial(json_data: dict, query: list[str]) -> str | list[Any]:
 
     ### This is for returning product details together with the score, not necessary for the API
     # similar_products = {
-    #     key: value for key, value in test_data.items() if key in similarity.keys()
+    #     key: value for key, value in json_data.items() if key in similarity.keys()
     # }
     #
     # for key in similar_products.keys():
