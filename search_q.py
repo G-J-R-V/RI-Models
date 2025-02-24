@@ -11,16 +11,18 @@ from Models.vetorial import modelo_vetorial
 nltk.download("stopwords")
 
 stemmer = SnowballStemmer("portuguese")
+
+# Removes stopwords
 sw = set(stopwords.words("portuguese"))
 ###
 
-### Global test_data
+### Global json_data
 with open("res/dados_loja.json", "r", encoding="utf-8") as file:
-    test_data = json.load(file)
+    json_data = json.load(file)
 
 test_data_dict = {}
 
-for i, value in enumerate(test_data):
+for i, value in enumerate(json_data):
     value["R"] = False
     test_data_dict[f"Doc{i}"] = value
 ###
@@ -36,7 +38,7 @@ def clean_query(query: str = "") -> list[str]:
         if w not in sw
     ]
 
-    print("Clean query: " + f"{query}" + "\n")
+    print(f"Clean query: {query}")
 
     return query
 
@@ -49,13 +51,13 @@ def search_query(query: str = ""):
 
     resultado_vetorial = modelo_vetorial(test_data_dict, cleaned_query)
 
-    print(f"Resultado: {resultado_vetorial}")
+    print(f"Resultado: {resultado_vetorial}\n")
 
-    return resultado_vetorial  ##
+    return resultado_vetorial
 
 
 if __name__ == "__main__":
 
-    resultado = search_query("Blusa")
+    resultado = search_query("Banana Azul")
 
     # print(f"\nResultado: {resultado}")
