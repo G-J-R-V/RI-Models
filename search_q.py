@@ -20,11 +20,11 @@ sw = set(stopwords.words("portuguese"))
 with open("res/dados_loja.json", "r", encoding="utf-8") as file:
     json_data = json.load(file)
 
-test_data_dict = {}
+json_data_dict = {}
 
 for i, value in enumerate(json_data):
     value["R"] = False
-    test_data_dict[f"Doc{i}"] = value
+    json_data_dict[f"Doc{i}"] = value
 ###
 
 
@@ -45,11 +45,11 @@ def clean_query(query: str = "") -> list[str]:
 
 def search_query(query: str = ""):
 
-    global test_data_dict
+    global json_data_dict
 
     cleaned_query = clean_query(query)
 
-    resultado_vetorial = modelo_vetorial(test_data_dict, cleaned_query)
+    resultado_vetorial = modelo_vetorial(json_data_dict, cleaned_query)
 
     print(f"Resultado: {resultado_vetorial}\n")
 
