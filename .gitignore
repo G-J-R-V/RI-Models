@@ -169,3 +169,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+/res
+txt_to_json.py
+/.idea
+/TESTS/
+/RI_models_docs/
